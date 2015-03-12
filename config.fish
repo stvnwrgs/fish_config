@@ -1,3 +1,6 @@
+set --export EDITOR "nano -c"
+set --export GREP_OPTIONS --color=auto
+set --export TERM "xterm-256color"
 
 set orange f47d44
 set red e46764
@@ -6,13 +9,11 @@ set blue 006bb6
 set hemlock 9eccb3
 
 set fish_git_dirty_color red
-set fish_git_not_dirty_color $blue
-set root_user_color $orange
-
+set fish_git_not_dirty_color blue
 
 function parse_username
   if [ (whoami) = root ]
-    echo (set_color $root_user_color)(whoami)
+    echo (set_color $red)(whoami)
   else
     echo (whoami)
   end
@@ -25,7 +26,7 @@ function parse_hostname
             echo (set_color $fish_git_dirty_color)$hostcode(set_color normal)
         case '*staging*'
             echo (set_color $orange)$hostcode(set_color normal)
-        case 'srv'
+        case '*srv*'
             echo (set_color $orange)$hostcode(set_color normal)
         case '*'
             echo (set_color $hemlock)$hostcode(set_color normal)
@@ -46,8 +47,8 @@ end
 
 function fish_prompt
   if test -d .git
-    printf '%s@%s %s%s%s:%s> ' (parse_username) (parse_hostname) (set_color $fish_color_cwd) (prompt_pwd) (set_color normal) (parse_git_branch)
+    printf '%s||%s %s%s%s:%s> ' (parse_username) (parse_hostname) (set_color $fish_color_cwd) (prompt_pwd) (set_color normal) (parse_git_branch)
   else
-    printf '%s@%s %s%s%s> ' (parse_username) (parse_hostname) (set_color $fish_color_cwd) (prompt_pwd) (set_color normal)
+    printf '%s||%s %s%s%s> ' (parse_username) (parse_hostname) (set_color $fish_color_cwd) (prompt_pwd) (set_color normal)
   end
 end
